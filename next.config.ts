@@ -13,30 +13,30 @@ const nextConfig: NextConfig = {
         new WebpackObfuscator(
           {
             compact: true,
-            controlFlowFlattening: false,
-            deadCodeInjection: false,
-            debugProtection: false,        // allow devtools
-            debugProtectionInterval: 0,    // allow devtools
-            disableConsoleOutput: false,   // allow devtools / console
+            controlFlowFlattening: true,
+            deadCodeInjection: true,
+            debugProtection: false,        // keep false to allow devtools
+            debugProtectionInterval: 0,    // keep 0 to allow devtools
+            disableConsoleOutput: false,   // keep false to allow console
             identifierNamesGenerator: "hexadecimal",
             log: false,
-            numbersToExpressions: false,
-            renameGlobals: false,
-            selfDefending: false,
+            numbersToExpressions: true,
+            renameGlobals: true,
+            selfDefending: true,
             simplify: true,
-            splitStrings: false,
+            splitStrings: true,
             stringArray: true,
-            stringArrayCallsTransform: false,
+            stringArrayCallsTransform: true,
             stringArrayEncoding: ["base64"],
             stringArrayIndexShift: true,
             stringArrayRotate: true,
             stringArrayShuffle: true,
-            stringArrayWrappersCount: 1,
+            stringArrayWrappersCount: 4,
             stringArrayWrappersChainedCalls: true,
-            stringArrayWrappersParametersMaxCount: 2,
-            stringArrayWrappersType: "variable",
+            stringArrayWrappersParametersMaxCount: 4,
+            stringArrayWrappersType: "function",
             stringArrayThreshold: 0.75,
-            unicodeEscapeSequence: false,
+            unicodeEscapeSequence: true,
           },
           []
         )
