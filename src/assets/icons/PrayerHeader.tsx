@@ -1,18 +1,12 @@
 import React from 'react';
+import prayerHeaderSvg from './prayerHeaderSvgString';
 
 interface PrayerHeaderProps {
   className?: string;
 }
 
-const PrayerHeader: React.FC<PrayerHeaderProps> = ({ className }) => (
-  // eslint-disable-next-line @next/next/no-img-element
-  <img
-    src="/prayer-header.svg"
-    alt=""
-    className={className}
-    height="171"
-    width="300"
-  />
+const PrayerHeader: React.FC<PrayerHeaderProps> = () => (
+  <div dangerouslySetInnerHTML={{ __html: prayerHeaderSvg }} style={{ display: 'contents' }} />
 );
 
 export default PrayerHeader;
