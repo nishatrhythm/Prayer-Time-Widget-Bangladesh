@@ -215,7 +215,9 @@ const PrayerTimes: React.FC<PrayerTimesProps> = ({ widgetHeight }) => {
         </div>
 
         <div className="prayer-footer">
-          সূত্র: ইসলামিক ফাউন্ডেশন বাংলাদেশ
+          <div style={{ marginTop: '5px' }}>সূত্র: ইসলামিক ফাউন্ডেশন বাংলাদেশ</div>
+          <hr style={{ borderTop: '1px dashed var(--black12)', borderBottom: 'none', borderLeft: 'none', borderRight: 'none', width: '100%', margin: '5px 0' }} />
+          <div><a href="https://github.com/nishatrhythm/Prayer-Time-Widget-Bangladesh" target="_blank" rel="noopener noreferrer" className="footer-link">গিটহাবে</a> সোর্স কোড পাওয়া যাবে</div>
         </div>
       </div>
     </div>

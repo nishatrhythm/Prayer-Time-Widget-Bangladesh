@@ -367,12 +367,12 @@ html {
 }
 
 body {
-  background-color: var(--background-color);
+  background-color: var(--roseWhite);
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  padding: 20px 0;
+  padding: 0 0 20px 0;
 }
 
 /* ===== Prayer Times Component (from prayer-times.m.css) ===== */
@@ -608,14 +608,24 @@ body {
 }
 
 .prayer-footer {
-  height: 35px;
+  min-height: 35px;
+  height: auto;
+  padding: 5px 0;
   font-size: var(--fs-14_5);
   color: var(--guardsman-red);
   background: #ffbca9;
   text-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2px;
+}
+
+.footer-link {
+  color: var(--guardsman-red);
+  font-weight: var(--bold);
+  text-decoration: underline;
 }
 
 /* ===== Spinner Component (from spinner.m.css) ===== */
