@@ -1,0 +1,238 @@
+.base {
+  --length: 288;
+  --prayer-primary-color: #d60000;
+  --prayer-secondary-color: #ffcabb;
+  --prayer-secondary-light-color: #ffe8e7;
+
+  --footer-bg-color: var(--pastel-green);
+  --footer-text-color: var(--fun-green);
+  --bottom-bg-color: var(--aero-blue);
+  --dot-color: var(--guardsman-red);
+  --dot-default-color: var(--romantic);
+
+  display: grid;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.prayer {
+  width: 300px;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  background-color: var(--prayer-bg);
+}
+
+.headerIcon {
+  position: absolute;
+  z-index: var(--default);
+  cursor: default;
+}
+
+.headerContent {
+  position: absolute;
+  top: 95px;
+  height: 76px;
+}
+
+.headerText {
+  position: relative;
+  font-size: var(--fs-20);
+  font-weight: var(--bold);
+  line-height: 1.2;
+  display: block;
+  text-align: center;
+  color: var(--black87);
+  margin-top: var(--space0_6);
+}
+
+.headerPlace {
+  position: relative;
+  font-size: var(--fs-16);
+  display: block;
+  text-align: center;
+  color: var(--black87);
+  margin-top: var(--space0_4);
+}
+
+.place {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--guardsman-red);
+  appearance: none;
+  padding: 0 var(--space0_6);
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: calc(-1 * var(--space0_4));
+  padding-right: var(--space2_4);
+  font-size: var(--fs-16);
+  cursor: pointer;
+}
+
+.places {
+  position: absolute;
+  z-index: var(--image-overlay);
+  display: flex;
+  flex-direction: column;
+  border: var(--border1-0_12);
+  max-height: 200px;
+  overflow-y: auto;
+  background: var(--white);
+  padding: var(--space0_6);
+  border-radius: var(--space0_6);
+  right: var(--space4_0);
+  scrollbar-color: var(--gallery-scrollbar) var(--very-light-pink);
+}
+
+.places::-webkit-scrollbar {
+  width: var(--space0_8);
+}
+
+.places::-webkit-scrollbar-button {
+  display: none;
+}
+
+.places::-webkit-scrollbar-track {
+  background-color: var(--very-light-pink);
+  border-radius: var(--space1_0);
+}
+
+.places::-webkit-scrollbar-thumb {
+  border-radius: var(--space1_0);
+  background: var(--gallery-scrollbar);
+}
+
+.placeItem {
+  display: block;
+  padding: var(--space0_6) var(--space1_0);
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.placeItem:not(:first-child) {
+  border-top: var(--border1-0_12);
+}
+
+.header {
+  display: block;
+  height: 190px;
+  width: 100%;
+  position: relative;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: var(--space1_0);
+}
+
+.prayers {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin-top: var(--space1_2);
+}
+
+.arrowSteps circle {
+  fill: var(--dot-default-color);
+}
+
+.prayersName text {
+  font-size: var(--fs-16);
+}
+
+.prayersTimes text {
+  font-size: var(--fs-14_5);
+}
+
+.prayersTimeSteps {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.bottom {
+  display: grid;
+  width: 100%;
+  margin-top: var(--space1_6);
+  padding: var(--space1_2) 0;
+  background-color: var(--prayer-secondary-color);
+}
+
+.bottomUp {
+  padding-bottom: var(--space1_0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px dashed var(--prayer-secondary-color);
+}
+
+.bottomDown {
+  display: grid;
+  padding-top: var(--space1_2);
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0 var(--space1_6);
+  border-top: 1px dashed var(--black12);
+}
+
+.sunriseContent {
+  display: flex;
+}
+
+.content,
+.sunrsetContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sahriText,
+.iftarText {
+  font-weight: var(--bold);
+}
+
+.sunriseText {
+  padding-left: var(--space1_6);
+  padding-right: var(--space0_8);
+  font-weight: var(--bold);
+}
+
+.sunriseText,
+.sunriseTime {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sunriseIcon {
+  margin-top: calc(-1 * var(--space0_6));
+}
+
+.sahriText,
+.iftarText,
+.sunriseText,
+.sahriTime,
+.iftarTime {
+  font-size: var(--fs-16);
+  color: var(--black87);
+}
+
+.sunriseTime,
+.sunrsetTime {
+  font-size: var(--fs-14_5);
+}
+
+.prayerFooter {
+  height: 35px;
+  font-size: var(--fs-14_5);
+  color: var(--guardsman-red);
+  background: #ffbca9;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
