@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 const WebpackObfuscator = require("webpack-obfuscator");
 
 const nextConfig: NextConfig = {
-  turbopack: {}, // dev uses Turbopack; webpack config below applies to production builds only
+  // turbopack is enabled via `next dev --turbopack`; omitting it here keeps
+  // production builds on webpack so the obfuscator plugin is applied.
   webpack(config, { isServer, dev }) {
     // Obfuscate JS in production client-side builds only
     if (!dev && !isServer) {
