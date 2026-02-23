@@ -95,7 +95,7 @@ const Spinner: React.FC<SpinnerProps> = ({ prayer, currnet }) => {
     delta -= minutes * 60;
     const seconds = Math.floor(delta % 60);
 
-    const spin = Math.floor(288 * (totalTime - duration) / totalTime);
+    const spin = 288 * (totalTime - duration) / totalTime;
     setSpinnerTime({
       stroke: spin,
       hours,
