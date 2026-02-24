@@ -520,14 +520,19 @@ body {
 
 .arrow-steps circle {
   fill: var(--dot-default-color);
+  transition: fill 0.3s ease;
 }
 
 .prayers-name text {
   font-size: var(--fs-16);
+  fill: var(--black87);
+  transition: fill 0.3s ease, font-weight 0.3s ease;
 }
 
 .prayers-times text {
   font-size: var(--fs-14_5);
+  fill: var(--black87);
+  transition: fill 0.3s ease, font-weight 0.3s ease;
 }
 
 .prayers-time-steps {
@@ -664,6 +669,7 @@ body {
   stroke-dashoffset: var(--length);
   stroke-dasharray: var(--length);
   stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease-out;
 }
 
 .spinner-texts {
@@ -745,6 +751,39 @@ body {
   height: 30px;
   justify-content: center;
   transition: top 200ms;
+}
+
+/* ===== Shimmer & Loading Animations ===== */
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+
+.shimmer-line {
+  background: linear-gradient(90deg, #ffcabb 25%, #ffe8e780 50%, #ffcabb 75%);
+  background-size: 400px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+  display: inline-block;
+  min-height: 1em;
+}
+
+.shimmer-line-dark {
+  background: linear-gradient(90deg, #e8a999 25%, #ffd6c8 50%, #e8a999 75%);
+  background-size: 400px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+  display: inline-block;
+  min-height: 1em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }
 
 /* ===== Media Queries ===== */

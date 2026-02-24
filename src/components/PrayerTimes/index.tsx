@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Spinner from './spinner/index';
 import PrayerHeader from '../../assets/icons/PrayerHeader';
 import PrayerSunrise from '../../assets/icons/PrayerSunrise';
 import { Prayer, Place, Times, convertTime, jumaCheck } from '../../utils/models/Prayer';
 import { prayerDistricts } from '../../utils/constants';
-import { prayerApi, getStorage, setStorage } from '../../utils';
+import { prayerApi, getStorage, setStorage, toBanglaString } from '../../utils';
 
 interface PrayerTimesProps {
   widgetHeight?: number;
@@ -17,6 +17,9 @@ const PrayerTimes: React.FC<PrayerTimesProps> = ({ widgetHeight }) => {
   const [prayer, setPrayer] = useState<Prayer | null>(null);
   const [showPlaces, setShowPlaces] = useState(false);
   const [prayerIndex, setPrayerIndex] = useState<number | undefined>();
+  const [timelineLoaded, setTimelineLoaded] = useState(false);
+  const [animatingTimes, setAnimatingTimes] = useState<string[]>(['০০:০০', '০০:০০', '০০:০০', '০০:০০', '০০:০০']);
+  const timelineAnimRef = useRef(false);
 
   useEffect(() => {
     const dist = getStorage('district');
@@ -84,6 +87,35 @@ const PrayerTimes: React.FC<PrayerTimesProps> = ({ widgetHeight }) => {
     changeSteps();
   }, [prayerIndex]);
 
+  useEffect(() => {
+    if (!prayer || timelineAnimRef.current) return;
+    timelineAnimRef.current = true;
+    const finalTimes = [
+      convertTime(prayer.fajr),
+      convertTime(prayer.dhuhr),
+      convertTime(prayer.asr),
+      convertTime(prayer.maghrib),
+      convertTime(prayer.isha)
+    ];
+    let frame = 0;
+    const totalFrames = 12;
+    const timerId = setInterval(() => {
+      frame++;
+      if (frame >= totalFrames) {
+        clearInterval(timerId);
+        setAnimatingTimes(finalTimes);
+        setTimelineLoaded(true);
+      } else {
+        setAnimatingTimes(finalTimes.map(() => {
+          const h = Math.floor(Math.random() * 12) + 1;
+          const m = Math.floor(Math.random() * 60);
+          return toBanglaString(`${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`);
+        }));
+      }
+    }, 50);
+    return () => clearInterval(timerId);
+  }, [prayer]);
+
   const changeSteps = () => {
     const index = prayerIndex;
     if (typeof index !== 'number') return;
@@ -108,10 +140,10 @@ const PrayerTimes: React.FC<PrayerTimesProps> = ({ widgetHeight }) => {
       Array.from(nameElements).forEach((name, i) => {
         const nameElement = name as HTMLElement;
         if (i === index - 1) {
-          nameElement.style.color = 'var(--rgbBlack)';
+          nameElement.style.fill = 'var(--rgbBlack)';
           nameElement.style.fontWeight = 'var(--bold)';
         } else {
-          nameElement.style.color = 'var(--black87)';
+          nameElement.style.fill = 'var(--black87)';
           nameElement.style.fontWeight = 'var(--regular)';
         }
       });
@@ -119,10 +151,10 @@ const PrayerTimes: React.FC<PrayerTimesProps> = ({ widgetHeight }) => {
       Array.from(timeElements).forEach((time, i) => {
         const timeElement = time as HTMLElement;
         if (i === index - 1) {
-          timeElement.style.color = 'var(--rgbBlack)';
+          timeElement.style.fill = 'var(--rgbBlack)';
           timeElement.style.fontWeight = 'var(--bold)';
         } else {
-          timeElement.style.color = 'var(--black87)';
+          timeElement.style.fill = 'var(--black87)';
           timeElement.style.fontWeight = 'var(--regular)';
         }
       });
@@ -146,7 +178,11 @@ const PrayerTimes: React.FC<PrayerTimesProps> = ({ widgetHeight }) => {
             <h3 className="header-text">আজকের নামাজের সময়সূচি</h3>
             <div className="header-place">
               <span>জেলা:</span>
-              <span className="place" id="place">{city.bnName}</span>
+              {prayer ? (
+                <span className="place fade-in" id="place">{city.bnName}</span>
+              ) : (
+                <span className="shimmer-line" style={{ width: 70, height: 16, verticalAlign: 'middle', marginLeft: 4 }}>&nbsp;</span>
+              )}
               {showPlaces && (
                 <div className="places" id="places">
                   {prayerDistricts.districts.map((district, index) => (
@@ -184,11 +220,11 @@ const PrayerTimes: React.FC<PrayerTimesProps> = ({ widgetHeight }) => {
                 <circle cx="250" cy="6" r="6" />
               </svg>
               <svg id="prayer-times" width="100%" height="24" className="prayers-times">
-                <text x="10" y="16">{convertTime(prayer?.fajr || null)}</text>
-                <text x="70" y="16">{convertTime(prayer?.dhuhr || null)}</text>
-                <text x="130" y="16">{convertTime(prayer?.asr || null)}</text>
-                <text x="190" y="16">{convertTime(prayer?.maghrib || null)}</text>
-                <text x="250" y="16">{convertTime(prayer?.isha || null)}</text>
+                <text x="10" y="16">{timelineLoaded ? convertTime(prayer?.fajr || null) : animatingTimes[0]}</text>
+                <text x="70" y="16">{timelineLoaded ? convertTime(prayer?.dhuhr || null) : animatingTimes[1]}</text>
+                <text x="130" y="16">{timelineLoaded ? convertTime(prayer?.asr || null) : animatingTimes[2]}</text>
+                <text x="190" y="16">{timelineLoaded ? convertTime(prayer?.maghrib || null) : animatingTimes[3]}</text>
+                <text x="250" y="16">{timelineLoaded ? convertTime(prayer?.isha || null) : animatingTimes[4]}</text>
               </svg>
             </div>
           </div>
@@ -198,18 +234,45 @@ const PrayerTimes: React.FC<PrayerTimesProps> = ({ widgetHeight }) => {
           <div className="bottom-up">
             <PrayerSunrise className="sunrise-icon" height="24" width="24" />
             <div className="sunrise-content">
-              <div className="sunrise-text">{prayer?.currentSunrise.text}</div>
-              <div className="sunrise-time"> ভোর {prayer?.currentSunrise.time}</div>
+              {prayer ? (
+                <>
+                  <div className="sunrise-text fade-in">{prayer.currentSunrise.text}</div>
+                  <div className="sunrise-time fade-in"> ভোর {prayer.currentSunrise.time}</div>
+                </>
+              ) : (
+                <>
+                  <span className="shimmer-line-dark" style={{ width: 90, height: 16 }}>&nbsp;</span>
+                  <span className="shimmer-line-dark" style={{ width: 60, height: 14, marginLeft: 6 }}>&nbsp;</span>
+                </>
+              )}
             </div>
           </div>
           <div className="bottom-down">
             <div className="content">
-              <div className="sahri-text">{prayer?.currentSehri.text}</div>
-              <div className="sahri-time">ভোর {prayer?.currentSehri.time}</div>
+              {prayer ? (
+                <>
+                  <div className="sahri-text fade-in">{prayer.currentSehri.text}</div>
+                  <div className="sahri-time fade-in">ভোর {prayer.currentSehri.time}</div>
+                </>
+              ) : (
+                <>
+                  <span className="shimmer-line-dark" style={{ width: 65, height: 16 }}>&nbsp;</span>
+                  <span className="shimmer-line-dark" style={{ width: 60, height: 14, marginTop: 4 }}>&nbsp;</span>
+                </>
+              )}
             </div>
             <div className="content">
-              <div className="iftar-text">{prayer?.currentIftar.text}</div>
-              <div className="iftar-time">সন্ধ্যা {prayer?.currentIftar.time}</div>
+              {prayer ? (
+                <>
+                  <div className="iftar-text fade-in">{prayer.currentIftar.text}</div>
+                  <div className="iftar-time fade-in">সন্ধ্যা {prayer.currentIftar.time}</div>
+                </>
+              ) : (
+                <>
+                  <span className="shimmer-line-dark" style={{ width: 65, height: 16 }}>&nbsp;</span>
+                  <span className="shimmer-line-dark" style={{ width: 70, height: 14, marginTop: 4 }}>&nbsp;</span>
+                </>
+              )}
             </div>
           </div>
         </div>

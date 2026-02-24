@@ -106,7 +106,7 @@ const Spinner: React.FC<SpinnerProps> = ({ prayer, currnet }) => {
 
   useEffect(() => {
     if (!prayer?.activePrayer) return;
-
+    intervalCallback();
     const interval = setInterval(intervalCallback, 1000);
     return () => clearInterval(interval);
   }, [prayer, intervalCallback]);
@@ -114,14 +114,12 @@ const Spinner: React.FC<SpinnerProps> = ({ prayer, currnet }) => {
   const getCounter = (key: string) => (
     <span className="count-container">
       <span className="count" id={key}>
-        <span className="count-item" style={{ top: -30 }} />
-        <span className="count-item" style={{ top: 0 }} />
-        <span className="count-item" style={{ top: 30 }} />
+        <span className="count-item" style={{ top: -30 }}>০০</span>
+        <span className="count-item" style={{ top: 0 }}>০০</span>
+        <span className="count-item" style={{ top: 30 }}>০০</span>
       </span>
     </span>
   );
-
-  if (!(prayer && prayer.times.valids)) return null;
 
   return (
     <div className={`spinner ${activePrayer?.type || ''}`}>
@@ -129,7 +127,7 @@ const Spinner: React.FC<SpinnerProps> = ({ prayer, currnet }) => {
         <circle className="spinner-bg" cx="50" cy="50" r="46" />
         <circle
           strokeMiterlimit={10}
-          style={{ strokeDashoffset: spinnerTime.stroke || 0 }}
+          style={{ strokeDashoffset: spinnerTime.stroke !== undefined ? spinnerTime.stroke : 288 }}
           className="loader"
           cx="50"
           cy="50"
@@ -137,7 +135,13 @@ const Spinner: React.FC<SpinnerProps> = ({ prayer, currnet }) => {
         />
       </svg>
       <div className="spinner-texts">
-        <div className="prayer-name">{activePrayer?.name}</div>
+        <div className="prayer-name">
+          {activePrayer ? (
+            <span className="fade-in">{activePrayer.name}</span>
+          ) : (
+            <span className="shimmer-line" style={{ width: 70, height: 28, marginTop: 2 }}>&nbsp;</span>
+          )}
+        </div>
         <div className="prayer-time">ওয়াক্ত শুরু হতে বাকি</div>
         <div className="prayer-left-count">
           <span className="counts">
